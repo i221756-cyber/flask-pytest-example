@@ -11,40 +11,39 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'python -m venv venv'
-                sh '. venv/bin/activate && pip install -r requirements.txt'
+                bat 'python -m venv venv'
+                bat 'venv\\Scripts\\activate && pip install -r requirements.txt'
             }
         }
 
         stage('Run Unit Tests') {
             steps {
-                sh '. venv/bin/activate && pytest'
+                bat 'venv\\Scripts\\activate && pytest'
             }
         }
 
         stage('Build Application') {
             steps {
-                echo 'Building Flask application'
-                sh 'mkdir -p build'
-                sh 'cp -r . build/'
+                bat 'mkdir build'
+                bat 'xcopy /E /I /Y . build'
             }
         }
 
         stage('Deploy Application') {
             steps {
-                echo 'Simulating deployment'
-                sh 'mkdir -p /tmp/flask-deploy'
-                sh 'cp -r build/* /tmp/flask-deploy/'
+                bat 'mkdir C:\\temp\\flask-deploy'
+                bat 'xcopy /E /I /Y build C:\\temp\\flask-deploy'
             }
         }
     }
 
     post {
         success {
-            echo 'CI/CD Pipeline completed successfully'
+            echo 'Pipeline executed successfully'
         }
         failure {
             echo 'Pipeline failed'
         }
     }
 }
+
