@@ -17,10 +17,14 @@ pipeline {
         }
 
         stage('Run Unit Tests') {
-            steps {
-                bat 'venv\\Scripts\\activate && pytest'
-            }
-        }
+    steps {
+        bat '''
+        venv\\Scripts\\activate &&
+        set PYTHONPATH=%CD% &&
+        pytest
+        '''
+    }
+}
 
         stage('Build Application') {
             steps {
